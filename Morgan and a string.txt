@@ -1,0 +1,138 @@
+2)PROBLEM STATEMENT:
+Jack and Daniel are friends. Both of them like letters, especially uppercase ones.
+They are cutting uppercase letters from newspapers, and each one of them has his collection of letters stored in a stack.
+
+One beautiful day, Morgan visited Jack and Daniel. He saw their collections. He wondered what is the lexicographically minimal string made of those two collections. He can take a letter from a collection only when it is on the top of the stack. Morgan wants to use all of the letters in their collections.
+
+As an example, assume Jack has collected  and Daniel has . The example shows the top at index  for each stack of letters. Assemble the string as follows:
+
+Jack	Daniel	result
+ACA	BCF
+CA	BCF	A
+CA	CF	AB
+A	CF	ABC
+A	CF	ABCA
+    	F	ABCAC
+    		ABCACF
+Note the choice when there was a tie at CA and CF.
+
+Function Description
+
+Complete the morganAndString function in the editor below.
+
+morganAndString has the following parameter(s):
+
+string a: Jack's letters, top at index 
+string b: Daniel's letters, top at index 
+Returns
+- string: the completed string
+
+Input Format
+
+The first line contains the an integer , the number of test cases.
+
+The next  pairs of lines are as follows:
+- The first line contains string 
+- The second line contains string .
+
+Constraints
+
+ and  contain upper-case letters only, ascii[A-Z].
+Sample Input
+
+2
+JACK
+DANIEL
+ABACABA
+ABACABA
+Sample Output
+
+DAJACKNIEL
+AABABACABACABA
+Explanation
+
+The first letters to choose from are J and D since they are at the top of the stack. D is chosen and the options now are J and A. A is chosen. Then the two stacks have J and N, so J is chosen. The current string is DA. Continue this way to the end to get the string.
+
+OUTPUT:
+Language: C
+Result: Test case #17/17
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+char str1[100001];
+char str2[100001];
+void printequal(int *i,int len1,int *j,int len2){
+    char c=str1[*i],ci,cj;
+    int i1,j1,k;
+    for(i1=*i,j1=*j;str1[i1]==str2[j1]&&i1<len1&&j1<len2;i1++,j1++){
+
+         if(str1[i1]>c){
+            for(;str1[*i]==c;(*i)++)
+                printf("%c",str1[*i]);
+            return;
+        }
+        
+    }
+
+        if(i1==len1){
+            for(;str2[*j]==c;(*j)++)
+                printf("%c",str2[*j]);return;
+        }
+        else if(j1==len2){
+                        for(;str1[*i]==c;(*i)++)
+                printf("%c",str1[*i]);return;
+            
+        }
+    else if(str1[i1]<c && str1[i1]<str2[j1]){
+        for(;*i<i1;(*i)++)
+                printf("%c",str1[*i]);return;
+    }
+    else if(str2[j1]<c && str1[i1]>str2[j1]){
+        for(;*j<j1;(*j)++)
+                printf("%c",str2[*j]);return;
+    }
+    else{
+            for(;str1[*i]==c;(*i)++)
+                printf("%c",str1[*i]);
+            return;
+    }
+
+    return;
+}
+
+int main(){
+    int T,i,j,len1,len2;
+    scanf("%d",&T);
+    while(T--){
+        scanf("%s%s",str1,str2);
+        len1=strlen(str1);
+        len2=strlen(str2);
+        i=0;j=0;
+        while(i<len1 || j<len2){
+            if(i==len1){
+                printf("%c",str2[j]);j++;
+            }
+            else if(j==len2){
+                printf("%c",str1[i]);i++;
+            }
+            else if(str1[i]<str2[j]){
+                printf("%c",str1[i]);i++;
+            }
+            else if(str1[i]>str2[j]){
+                printf("%c",str2[j]);j++;
+            }
+            else{
+                printequal(&i,len1,&j,len2);
+            
+                
+            }
+        }
+        printf("\n");
+        
+        
+    }
+    
+   
+    return 0;
+}
